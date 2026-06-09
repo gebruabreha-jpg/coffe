@@ -1,5 +1,5 @@
 {
-  "name": "4coffee-platform-frontend",
+  "name": "ho-coffee",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,7 +17,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.436.0",
-    "tailwind-merge": "^2.5.0"
+    "tailwind-merge": "^2.5.0",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",

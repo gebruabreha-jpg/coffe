@@ -1,3 +1,5 @@
+import { formatPrice } from "@/lib/utils"
+
 interface Product {
   id: string
   title: string
@@ -11,7 +13,7 @@ interface ProductGridProps {
   featured?: boolean
 }
 
-export default function ProductGrid({ products, featured }: ProductGridProps) {
+export default function ProductGrid({ products }: ProductGridProps) {
   const displayProducts = products || [
     { id: "1", title: "Ethiopian Blend", image: "/placeholder.jpg", price: 1800, handle: "ethiopian-blend" },
     { id: "2", title: "Colombian Single-Origin", image: "/placeholder.jpg", price: 2200, handle: "colombian-single-origin" },
@@ -38,7 +40,7 @@ function ProductCard({ product }: { product: Product }) {
         />
       </div>
       <h3 className="font-semibold text-lg">{product.title}</h3>
-      <p className="text-primary font-bold">${(product.price / 100).toFixed(2)}</p>
+      <p className="text-primary font-bold">{formatPrice(product.price)}</p>
     </div>
   )
 }

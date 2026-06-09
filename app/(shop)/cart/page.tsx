@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react'
-import { useCart } from '@/components/cart/CartProvider'
+import { useCart } from '@/features/shop/components/cart/CartProvider'
 import { formatPrice } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -47,7 +47,7 @@ export default function CartPage() {
 
                   <div className="flex-1">
                     <Link 
-                      href={`/product/`}
+                      href={`/product/${item.id}`}
                       className="font-semibold hover:text-primary"
                     >
                       {item.title}
@@ -105,11 +105,11 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{total > 50 ? 'Free' : '$5.00'}</span>
+                <span>{total > 5000 ? 'Free' : '$5.00'}</span>
               </div>
               <div className="border-t pt-2 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>{formatPrice(total + (total > 50 ? 0 : 5))}</span>
+                <span>{formatPrice(total + (total > 5000 ? 0 : 500))}</span>
               </div>
             </div>
 

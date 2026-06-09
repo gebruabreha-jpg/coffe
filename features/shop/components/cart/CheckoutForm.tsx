@@ -1,17 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { useCart } from '@/components/cart/CartProvider'
+import { useCart } from '@/features/shop/components/cart/CartProvider'
 import { formatPrice } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 
-interface CheckoutFormProps {
-  products: any[]
-}
-
-export default function CheckoutForm({ products }: CheckoutFormProps) {
+export default function CheckoutForm() {
   const { items, total, resetCart } = useCart()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -34,7 +30,7 @@ export default function CheckoutForm({ products }: CheckoutFormProps) {
           quantity: item.quantity,
           price: item.price,
         })),
-        total: total + (total > 50 ? 0 : 5),
+        total: total + (total > 5000 ? 0 : 500),
         shipping: formData,
       }
 
@@ -137,18 +133,18 @@ export default function CheckoutForm({ products }: CheckoutFormProps) {
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
-              <span>{total > 50 ? 'Free' : '$5.00'}</span>
+              <span>{total > 5000 ? 'Free' : '$5.00'}</span>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>{formatPrice(total + (total > 50 ? 0 : 5))}</span>
+              <span>{formatPrice(total + (total > 5000 ? 0 : 500))}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <Button type="submit" size="lg" className="w-full" disabled={loading}>
-        {loading ? 'Processing...' : `Pay ${formatPrice(total + (total > 50 ? 0 : 5))}`}
+        {loading ? 'Processing...' : `Pay ${formatPrice(total + (total > 5000 ? 0 : 500))}`}
       </Button>
     </form>
   )

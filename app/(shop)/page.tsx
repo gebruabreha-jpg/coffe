@@ -2,30 +2,20 @@ import Link from 'next/link'
 import { ArrowRight, Coffee, Bean } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import CampaignBanner from '@/components/brand/CampaignBanner'
-import StoryBlock from '@/components/story/StoryBlock'
-import { Suspense } from 'react'
+import CampaignBanner from '@/features/brand/components/CampaignBanner'
+import StoryBlock from '@/features/cms/components/StoryBlock'
 
-async function getFeaturedStory() {
-  return {
+export default async function HomePage() {
+  const story = {
     title: 'From Ethiopia to Your Cup',
     excerpt: 'Discover the journey of our flagship single-origin beans.',
   }
-}
 
-async function getFeaturedCampaign() {
-  return {
+  const campaign = {
     title: 'Spring Subscription Box',
     subtitle: '3 exclusive single-origin coffees delivered monthly',
     slug: 'spring-subscription',
   }
-}
-
-export default async function HomePage() {
-  const [story, campaign] = await Promise.all([
-    getFeaturedStory(),
-    getFeaturedCampaign(),
-  ])
 
   return (
     <div className="min-h-screen">
