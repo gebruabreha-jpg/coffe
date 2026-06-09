@@ -3,7 +3,7 @@ SaaS-grade headless coffee e-commerce built with Next.js + Shopify Storefront AP
 ## 📁 PROJECT STRUCTURE (START HERE)
 ### 🏗️ Base Folder Architecture
 ```
-/ho-coffee
+/nilo-coffee
 ├── app/                     # Next.js App Router
 │   ├── (shop)/              # Public storefront
 │   │   ├── page.tsx
