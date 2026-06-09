@@ -1,5 +1,3 @@
-# HO Coffee
-
 SaaS-grade headless coffee e-commerce built with Next.js + Shopify Storefront API.
 ## 📁 PROJECT STRUCTURE (START HERE)
 ### 🏗️ Feature-Based Architecture

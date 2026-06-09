@@ -136,10 +136,10 @@ function NewsletterSection() {
   )
 }
 
-function FeatureCard({ icon, title, description }: { 
-  icon: React.ReactNode 
-  title: string 
-  description: string 
+function FeatureCard({ icon, title, description }: {
+  icon: React.ReactNode
+  title: string
+  description: string
 }) {
   return (
     <Card>
