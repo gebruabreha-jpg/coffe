@@ -56,3 +56,11 @@ Sanity       €0–15
 Resend       €0–20
 PostHog      €0–20
 Total ≈ €55–90/month
+
+https://www.shopify.com/es-es
+https://vercel.com/gebruabreha-2874s-projects
+https://www.sanity.io/
+https://www.algolia.com/
+https://resend.com/?
+https://posthog.com/
+https://sentry.io/welcome/
