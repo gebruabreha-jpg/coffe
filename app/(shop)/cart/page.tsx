@@ -76,10 +76,10 @@ export default function CartPage() {
 
                   <div className="text-right">
                     <p className="font-bold">
-                      ${formatPrice(item.price * item.quantity)}
+                      {formatPrice(item.price * item.quantity)}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      ${item.price} each
+                      {formatPrice(item.price)} each
                     </p>
                     <button
                       onClick={() => removeItem(item.id)}

@@ -5,33 +5,35 @@ SaaS-grade headless coffee e-commerce built with Next.js + Shopify Storefront AP
 ```
 /ho-coffee
 ├── app/                     # Next.js App Router
-│   ├── (store)/             # Public storefront
+│   ├── (shop)/              # Public storefront
 │   │   ├── page.tsx
 │   │   ├── products/
 │   │   ├── product/[slug]/
 │   │   ├── cart/
 │   │   ├── collections/
 │   │
-│   ├── (cms)/              # Content pages
+│   ├── (cms)/               # Content pages
 │   │   ├── about/
 │   │   ├── journal/
 │   │   ├── brewing-guides/
 │   │
-│   ├── api/                # Backend routes (if needed)
+│   ├── api/                 # Backend routes (if needed)
 │   └── layout.tsx
 │
 ├── components/
-│   ├── ui/                 # Buttons, modals, inputs
-│   ├── shop/               # Product components
-│   ├── layout/             # Navbar, footer
+│   ├── ui/                  # Buttons, modals, inputs
+│   ├── shop/                # Product components
+│   ├── layout/              # Navbar, footer
+│   ├── cart/                # Cart components
+│   ├── brand/               # Brand/Campaign components
+│   └── story/               # Story/CMS components
 │
 ├── lib/
-│   ├── shopify/            # GraphQL client + queries
-│   ├── sanity/             # CMS client
-│   ├── utils/
+│   ├── shopify/             # GraphQL client + queries
+│   └── utils.ts             # Utility functions
 │
-├── store/                  # Zustand cart store
-├── styles/
+├── store/                   # Zustand cart store
+├── styles/ (via app/globals.css)
 ├── types/
 ├── hooks/
 ├── config/
