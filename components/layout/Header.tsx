@@ -15,7 +15,7 @@ export default function Header() {
 
             <Link href="/" className="flex items-center space-x-2">
               <Coffee className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">HO Coffee</span>
+              <span className="font-bold text-xl">NILO Coffee</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
