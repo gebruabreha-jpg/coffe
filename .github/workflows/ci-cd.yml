@@ -1,4 +1,4 @@
-name: Build and Deploy HO Coffee
+name: Build and Deploy NILO Coffee
 on:
   push:
     branches: [main]
