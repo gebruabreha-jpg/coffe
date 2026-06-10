@@ -1,5 +1,9 @@
-import { shopifyFetch, GET_PRODUCTS_QUERY, GET_COLLECTIONS_QUERY } from '@/lib/shopify'
-import { GET_PRODUCT_QUERY, GET_COLLECTION_QUERY } from '@/lib/shopify/queries'
+import shopifyFetch from './client'
+import { GET_PRODUCTS_QUERY, GET_COLLECTIONS_QUERY } from './queries'
+import { GET_PRODUCT_QUERY, GET_COLLECTION_QUERY } from './queries'
+
+export { shopifyFetch }
+export { GET_PRODUCTS_QUERY, GET_COLLECTIONS_QUERY, GET_PRODUCT_QUERY, GET_COLLECTION_QUERY }
 
 export async function getProducts(first = 12) {
   const data = await shopifyFetch<{

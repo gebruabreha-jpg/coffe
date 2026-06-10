@@ -1,13 +1,12 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import Link from 'next/link'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
 
-export function SearchModal({ children }: { children: React.ReactNode }) {
+export default function SearchModal({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
