@@ -13,6 +13,28 @@ export async function generateStaticParams() {
   }))
 }
 
+interface CampaignProduct {
+  id: string
+  name: string
+  description: string
+  price: number
+  image?: string
+}
+
+interface Campaign {
+  id: string
+  slug: string
+  title: string
+  description: string
+  image?: string
+  content?: string
+  ctaText?: string
+  ctaLink?: string
+  products: CampaignProduct[]
+  startDate: string
+  endDate: string
+}
+
 interface CampaignPageProps {
   params: Promise<{ slug: string }>
 }
@@ -71,7 +93,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8">In This Collection</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {campaign.products.map((product: any) => (
+              {campaign.products.map((product) => (
                 <div key={product.id} className="bg-background rounded-lg overflow-hidden shadow-sm">
                   <div className="aspect-square relative bg-muted">
                     {product.image && (
@@ -101,7 +123,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
   )
 }
 
-async function getCampaigns() {
+async function getCampaigns(): Promise<Campaign[]> {
   return [
     {
       id: '1',

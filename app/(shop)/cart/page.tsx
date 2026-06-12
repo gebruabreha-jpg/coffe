@@ -16,9 +16,9 @@ export default function CartPage() {
       <div className="container mx-auto px-4 py-16 text-center">
         <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
         <h1 className="text-2xl font-bold mb-2">Your cart is empty</h1>
-        <p className="text-muted-foreground mb-8">
-          Looks like you haven't added anything yet
-        </p>
+          <p className="text-muted-foreground mb-8">
+            Looks like you haven&apos;t added anything yet
+          </p>
         <Button asChild>
           <Link href="/">Continue Shopping</Link>
         </Button>
@@ -105,11 +105,11 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{total > 5000 ? 'Free' : '$5.00'}</span>
+                <span>{total > 50 ? 'Free' : '$5.00'}</span>
               </div>
               <div className="border-t pt-2 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>{formatPrice(total + (total > 5000 ? 0 : 500))}</span>
+                <span>{formatPrice(total + (total > 50 ? 0 : 5))}</span>
               </div>
             </div>
 
