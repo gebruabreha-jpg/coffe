@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, BookOpen } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export const revalidate = 3600
 
@@ -28,10 +28,11 @@ export default async function StoryListingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3">
                   {story.coverImage && (
                     <div className="aspect-video md:aspect-auto relative bg-muted">
-                      <img
+                      <Image
                         src={story.coverImage}
                         alt={story.title}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     </div>
                   )}

@@ -1,9 +1,66 @@
 import Link from 'next/link'
-import { ArrowRight, Coffee, Bean } from 'lucide-react'
+import Image from 'next/image'
+import { ArrowRight, Coffee, Bean, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import CampaignBanner from '@/features/brand/components/CampaignBanner'
-import StoryBlock from '@/features/cms/components/StoryBlock'
+import ProductGrid from '@/features/shop/components/ProductGrid'
+import { getProducts, getCollections } from '@/lib/shopify'
+
+export const dynamic = 'force-dynamic'
+
+export const metadata = {
+  title: 'NILO Coffee - Single-Origin Specialty Coffee',
+  description: 'Discover single-origin coffees sourced directly from farmers. Roasted to perfection. Delivered fresh to your door.',
+  openGraph: {
+    title: 'NILO Coffee - Single-Origin Specialty Coffee',
+    description: 'Discover single-origin coffees sourced directly from farmers.',
+    images: ['/og-image.jpg'],
+  },
+}
+
+interface StoryPreview {
+  title: string
+  excerpt: string
+}
+
+interface CampaignPreview {
+  title: string
+  subtitle: string
+  slug: string
+}
+
+interface Testimonial {
+  id: string
+  name: string
+  location: string
+  rating: number
+  quote: string
+}
+
+const testimonials: Testimonial[] = [
+  {
+    id: '1',
+    name: 'Sarah Chen',
+    location: 'San Francisco, CA',
+    rating: 5,
+    quote: "Best coffee I've ever had. The Ethiopian blend is incredible - you can taste the craftsmanship.",
+  },
+  {
+    id: '2',
+    name: 'Marcus Rivera',
+    location: 'Portland, OR',
+    rating: 5,
+    quote: 'Fresh, aromatic, and ethically sourced. NILO has converted me to single-origin for life.',
+  },
+  {
+    id: '3',
+    name: 'Julia Kim',
+    location: 'Seattle, WA',
+    rating: 5,
+    quote: 'The subscription box introduced me to coffees I never would have found. Every month is a discovery.',
+  },
+]
 
 export default async function HomePage() {
   const story = {
@@ -17,11 +74,17 @@ export default async function HomePage() {
     slug: 'spring-subscription',
   }
 
+  const products = await getProducts(4)
+  const collections = await getCollections(3)
+
   return (
     <div className="min-h-screen">
       <HeroSection />
       <FeaturesSection />
+      <FeaturedProductsSection products={products} />
+      <CollectionsSection collections={collections} />
       <FeaturedStorySection story={story} />
+      <TestimonialsSection testimonials={testimonials} />
       <CampaignBannerSection campaign={campaign} />
       <NewsletterSection />
     </div>
@@ -30,24 +93,35 @@ export default async function HomePage() {
 
 function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-b from-amber-50 to-background">
+    <section className="relative bg-gradient-to-b from-amber-50 to-background overflow-hidden">
       <div className="container mx-auto px-4 py-20 md:py-32">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            Discover Your Perfect <span className="text-primary">Brew</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Single-origin coffees sourced directly from farmers. Roasted to perfection. Delivered fresh to your door.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button asChild size="lg">
-              <Link href="/shop">
-                Shop Now <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/story">Our Story</Link>
-            </Button>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+              Discover Your Perfect <span className="text-primary">Brew</span>
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Single-origin coffees sourced directly from farmers. Roasted to perfection. Delivered fresh to your door.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button asChild size="lg">
+                <Link href="/shop">
+                  Shop Now <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/story">Our Story</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="relative h-[300px] md:h-[400px]">
+            <Image
+              src="/hero-coffee-beans.jpg"
+              alt="Premium coffee beans being poured into a glass container"
+              fill
+              className="object-cover rounded-lg"
+              priority
+            />
           </div>
         </div>
       </div>
@@ -86,7 +160,66 @@ function FeaturesSection() {
   )
 }
 
-function FeaturedStorySection({ story }: { story: any }) {
+function FeaturedProductsSection({ products }: { products: Awaited<ReturnType<typeof getProducts>> }) {
+  return (
+    <section className="py-16 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-bold">Featured Products</h2>
+          <Button asChild variant="ghost">
+            <Link href="/shop">View All <ArrowRight className="ml-1 h-4 w-4" /></Link>
+          </Button>
+        </div>
+        <ProductGrid products={products.map(p => ({
+          id: p.id,
+          title: p.title,
+          image: p.images?.edges[0]?.node?.url || '/placeholder.jpg',
+          price: parseFloat(p.priceRange?.minVariantPrice?.amount || '0'),
+          handle: p.handle,
+        }))} featured />
+      </div>
+    </section>
+  )
+}
+
+function CollectionsSection({ collections }: { collections: Awaited<ReturnType<typeof getCollections>> }) {
+  return (
+    <section className="py-16 bg-muted/30">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-8">Shop by Collection</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {collections.map((collection) => (
+            <Link
+              key={collection.id}
+              href={`/shop/${collection.handle}`}
+              className="group block"
+            >
+              <div className="aspect-square relative rounded-lg overflow-hidden bg-muted mb-4">
+                <Image
+                  src={collection.image?.url || '/placeholder.jpg'}
+                  alt={collection.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+              </div>
+              <h3 className="text-xl font-semibold text-center group-hover:text-primary transition-colors">
+                {collection.title}
+              </h3>
+              {collection.productsCount && (
+                <p className="text-sm text-muted-foreground text-center">
+                  {collection.productsCount} products
+                </p>
+              )}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FeaturedStorySection({ story }: { story: StoryPreview }) {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
@@ -103,7 +236,41 @@ function FeaturedStorySection({ story }: { story: any }) {
   )
 }
 
-function CampaignBannerSection({ campaign }: { campaign: any }) {
+function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
+  return (
+    <section className="py-16 bg-primary/5">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex mb-4">
+          {[...Array(testimonial.rating)].map((_, i) => (
+            <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+          ))}
+        </div>
+        <p className="text-muted-foreground mb-4">&ldquo;{testimonial.quote}&rdquo;</p>
+        <div>
+          <p className="font-semibold">{testimonial.name}</p>
+          <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function CampaignBannerSection({ campaign }: { campaign: CampaignPreview }) {
   return (
     <section className="py-16 bg-primary/5">
       <div className="container mx-auto px-4">

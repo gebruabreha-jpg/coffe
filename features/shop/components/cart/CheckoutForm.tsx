@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useCart } from '@/features/shop/components/cart/CartProvider'
 import { formatPrice } from '@/lib/utils'
@@ -26,11 +27,10 @@ export default function CheckoutForm() {
       const orderData = {
         email: formData.email,
         items: items.map(item => ({
-          productId: item.id,
+          variantId: item.variantId || item.id,
           quantity: item.quantity,
-          price: item.price,
         })),
-        total: total + (total > 5000 ? 0 : 500),
+        total: total + (total > 50 ? 0 : 5),
         shipping: formData,
       }
 
@@ -47,7 +47,7 @@ export default function CheckoutForm() {
         resetCart()
         window.location.href = '/order-confirmation'
       }
-    } catch (error) {
+    } catch {
       alert('Checkout failed. Please try again.')
     } finally {
       setLoading(false)
@@ -60,7 +60,7 @@ export default function CheckoutForm() {
         <CardContent className="p-8 text-center">
           <p className="text-lg mb-4">Your cart is empty</p>
           <Button asChild>
-            <a href="/">Continue Shopping</a>
+            <Link href="/">Continue Shopping</Link>
           </Button>
         </CardContent>
       </Card>
@@ -133,18 +133,18 @@ export default function CheckoutForm() {
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
-              <span>{total > 5000 ? 'Free' : '$5.00'}</span>
+              <span>{total > 50 ? 'Free' : '$5.00'}</span>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>{formatPrice(total + (total > 5000 ? 0 : 500))}</span>
+              <span>{formatPrice(total + (total > 50 ? 0 : 5))}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <Button type="submit" size="lg" className="w-full" disabled={loading}>
-        {loading ? 'Processing...' : `Pay ${formatPrice(total + (total > 5000 ? 0 : 500))}`}
+        {loading ? 'Processing...' : `Pay ${formatPrice(total + (total > 50 ? 0 : 5))}`}
       </Button>
     </form>
   )

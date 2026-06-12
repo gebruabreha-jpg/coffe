@@ -2,12 +2,46 @@ import { getProduct } from '@/lib/shopify'
 import { Truck, RefreshCw } from 'lucide-react'
 import { useCart } from '@/features/shop/components/cart/CartProvider'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
+
+export const dynamic = 'force-dynamic'
+
+interface ShopifyMoney {
+  amount: string
+  currencyCode: string
+}
+
+interface ShopifyImage {
+  url: string
+  altText?: string | null
+  width?: number
+  height?: number
+}
+
+interface ShopifyVariant {
+  id: string
+  title?: string
+  price: ShopifyMoney
+  availableForSale?: boolean
+}
+
+interface ShopifyProduct {
+  id: string
+  title: string
+  handle: string
+  description?: string | null
+  descriptionHtml?: string | null
+  images?: {
+    edges: Array<{ node: ShopifyImage }>
+  }
+  variants?: {
+    edges: Array<{ node: ShopifyVariant }>
+  }
+}
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
 }
-
-export const revalidate = 3600
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
@@ -19,19 +53,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const image = product.images?.edges?.[0]?.node
   const variant = product.variants?.edges?.[0]?.node
-  const price = parseFloat(variant?.price?.amount || '0') / 100
+  const price = parseFloat(variant?.price?.amount || '0')
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="aspect-square rounded-lg overflow-hidden bg-muted">
           {image && (
-            <img
+            <Image
               src={image.url}
               alt={image.altText || product.title}
-              className="h-full w-full object-cover"
-              width={1200}
-              height={1200}
+              fill
+              className="object-cover"
             />
           )}
         </div>
@@ -44,7 +77,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <div
             className="prose mb-8"
-            dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description }}
+            dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description || '' }}
           />
 
           <AddToCartButton product={product} variant={variant} image={image} />
@@ -75,7 +108,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   )
 }
 
-function AddToCartButton({ product, variant, image }: { product: any; variant: any; image: any }) {
+function AddToCartButton({ product, variant, image }: { product: ShopifyProduct; variant?: ShopifyVariant; image?: ShopifyImage }) {
   'use client'
   const { addItem } = useCart()
 
@@ -85,6 +118,7 @@ function AddToCartButton({ product, variant, image }: { product: any; variant: a
       onClick={() => {
         addItem({
           id: variant?.id || '',
+          variantId: variant?.id,
           title: product.title,
           price: parseFloat(variant?.price?.amount || '0'),
           image: image?.url || '',

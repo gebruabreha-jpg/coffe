@@ -170,3 +170,82 @@ export const GET_COLLECTION_QUERY = `
     }
   }
 `
+
+export const CART_CREATE_MUTATION = `
+  mutation cartCreate($lines: [CartLineInput!]) {
+    cartCreate(input: { lines: $lines }) {
+      cart {
+        id
+        checkoutUrl
+        createdAtUpdatedAt
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const CART_BUYER_IDENTITY_UPDATE_MUTATION = `
+  mutation cartBuyerIdentityUpdate($cartId: ID!, $email: String) {
+    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: { email: $email }) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const CART_ATTRIBUTES_UPDATE_MUTATION = `
+  mutation cartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const ORDER_BY_ID_QUERY = `
+  query getOrderById($id: ID!) {
+    node(id: $id) {
+      id
+      ... on Order {
+        id
+        name
+        email
+        totalPrice {
+          amount
+          currencyCode
+        }
+        lineItems(first: 100) {
+          edges {
+            node {
+              title
+              quantity
+              variant {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
